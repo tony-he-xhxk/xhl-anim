@@ -144,9 +144,15 @@
     },
     onRestart: function () { restart(true, false); },
     onAgain: function () { restart(true, false); },
+    /* 只关掉结算遮罩、保留当前画面；随后调参会进入“静止待开始”，不用再手动暂停 */
+    onTune: function () {
+      BE.UI.hideResult();
+      BE.UI.focusPanel();
+    },
     onStructChange: function () {
       params = BE.UI.read();
-      restart(state && state.status !== 'ready', false);
+      // 只有原本正在播放才继续播放；已结算或未开始都回到静止，方便连续调参
+      restart(state && state.status === 'running', false);
     },
     onSpeedChange: function () { applySpeed(); },
     onCountdownChange: function () {

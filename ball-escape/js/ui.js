@@ -58,6 +58,7 @@
       el.resultTitle = $('resultTitle');
       el.resultText = $('resultText');
       el.againBtn = $('againBtn');
+      el.tuneBtn = $('tuneBtn');
       el.hudRings = $('hudRings');
       el.hudEscaped = $('hudEscaped');
       el.hudTime = $('hudTime');
@@ -96,6 +97,7 @@
       bind(el.restartBtn, 'click', function () { if (app.onRestart) app.onRestart(); });
       bind(el.enterBtn, 'click', function () { if (app.onEnter) app.onEnter(); });
       bind(el.againBtn, 'click', function () { if (app.onAgain) app.onAgain(); });
+      bind(el.tuneBtn, 'click', function () { if (app.onTune) app.onTune(); });
     },
 
     read: function () {
@@ -151,6 +153,11 @@
 
     isStartVisible: function () {
       return !!(el.startOverlay && !el.startOverlay.hidden);
+    },
+
+    /* 关闭结算遮罩后，把焦点交给第一个参数滑杆，方便直接调参 */
+    focusPanel: function () {
+      if (el.rings) el.rings.focus();
     },
 
     hideResult: function () {

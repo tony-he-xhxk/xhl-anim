@@ -510,6 +510,9 @@ html, body {
 @media (max-width: 560px) {
   .overlay-card { padding: 1.5rem 1.25rem; }
   .overlay-hints { font-size: 0.79rem; }
+  /* 结算遮罩有三个按钮，收窄内边距让它们排在一行 */
+  .overlay-actions { gap: 0.5rem; }
+  .overlay-actions .btn { padding: 0.62rem 0.95rem; font-size: 0.84rem; letter-spacing: 0.04em; }
   .panel {
     max-height: 54vh;
     gap: 0.7rem;

@@ -84,7 +84,7 @@
           <button type="button" class="btn btn--primary" id="toggleBtn">开始</button>
           <button type="button" class="btn btn--ghost" id="restartBtn">重开</button>
         </div>
-        <p class="panel-tip">默认参数经过调校：小球最终能逃出全部圆环，但不轻松。调整参数会自动重开一局。</p>
+        <p class="panel-tip">默认参数经过调校：小球最终能逃出全部圆环，但不轻松。调整参数会重开一局；若当时没在播放，就停在待开始状态。</p>
       </footer>
     </aside>
 
@@ -112,6 +112,7 @@
         <p class="overlay-text" id="resultText"></p>
         <div class="overlay-actions">
           <button type="button" class="btn btn--primary" id="againBtn">再来一次</button>
+          <button type="button" class="btn btn--ghost" id="tuneBtn">调整参数</button>
           <a class="btn btn--ghost" href="../">返回集萃</a>
         </div>
       </div>
