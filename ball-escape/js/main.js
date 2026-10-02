@@ -12,6 +12,17 @@
   var state = null;
   var lastTime = 0;
   var resultShown = false;
+  var panelExpanded = false;   // 窄屏下玩家手动展开过调节栏
+  var compactApplied = null;
+
+  /* 窄屏且正在播放（且玩家没有手动展开）→ 收起调节栏，只留底部一行参数 */
+  function applyCompact() {
+    var narrow = (window.innerWidth || 0) <= 900;
+    var want = !!(narrow && state && state.status === 'running' && !panelExpanded);
+    if (want === compactApplied) return;
+    compactApplied = want;
+    BE.UI.setCompact(want);
+  }
 
   function mulberry32(a) {
     return function () {
@@ -42,6 +53,7 @@
       rings: [],
       ball: null,
       particles: [],
+      shocks: [],
       trail: [],
       destroyedCount: 0,
       bounces: 0,
@@ -111,6 +123,7 @@
       BE.UI.hideStart();
     } else {
       state.status = 'ready';
+      panelExpanded = false;
       if (showOverlay) BE.UI.showStart();
       else BE.UI.hideStart();
     }
@@ -136,6 +149,7 @@
       if (!state) return;
       if (state.status === 'ready' || state.status === 'paused') {
         state.status = 'running';
+        panelExpanded = false;      // 开始播放 → 窄屏自动收起调节栏
       } else if (state.status === 'running') {
         state.status = 'paused';
       } else {
@@ -143,6 +157,11 @@
         return;
       }
       BE.UI.sync(state);
+    },
+    /* 窄屏：从底部一行参数展开完整调节栏 */
+    onShowPanel: function () {
+      panelExpanded = true;
+      applyCompact();
     },
     onRestart: function () { restart(true, false); },
     onAgain: function () { restart(true, false); },
@@ -198,6 +217,7 @@
     BE.Camera.update(state, view, dt);
     BE.Render.draw(ctx, state, view);
     BE.UI.sync(state);
+    applyCompact();
 
     if ((state.status === 'won' || state.status === 'lost') && !resultShown) {
       resultShown = true;

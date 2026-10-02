@@ -20,7 +20,7 @@
           <span class="hud-value" id="hudRings">8</span>
         </div>
         <div class="hud-item">
-          <span class="hud-label">已逃离</span>
+          <span class="hud-label">已穿出</span>
           <span class="hud-value" id="hudEscaped">0</span>
         </div>
         <div class="hud-item">
@@ -88,6 +88,15 @@
       </footer>
     </aside>
 
+    <!-- 窄屏播放时收起调节栏，只在底部留一行参数 -->
+    <div class="mini" id="miniBar" hidden>
+      <p class="mini-params" id="miniParams"></p>
+      <div class="mini-actions">
+        <button type="button" class="btn btn--ghost btn--mini" id="miniToggle">暂停</button>
+        <button type="button" class="btn btn--ghost btn--mini" id="miniPanel">参数</button>
+      </div>
+    </div>
+
     <!-- 全局遮罩：覆盖画布与参数面板，任何一端的“进入动画 / 结算”都走这里 -->
     <div class="overlay" id="startOverlay" role="dialog" aria-modal="true" aria-labelledby="startTitle">
       <div class="overlay-card">
@@ -111,6 +120,7 @@
       <div class="overlay-card overlay-card--result">
         <h2 class="overlay-title" id="resultTitle">小球成功逃离！</h2>
         <p class="overlay-text" id="resultText"></p>
+        <p class="overlay-note">「穿出」= 小球从缺口钻出去、碎掉的层数。一次冲出去可以连穿好几层，所以它会大于撞击次数。</p>
         <div class="overlay-actions">
           <button type="button" class="btn btn--primary" id="againBtn">再来一次</button>
           <button type="button" class="btn btn--ghost" id="tuneBtn">调整参数</button>

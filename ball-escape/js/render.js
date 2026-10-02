@@ -58,6 +58,22 @@
         ctx.stroke();
       }
 
+      // 冲击环：每碎裂一层都有一圈向外扩散的脉冲，确保“每层都碎了”看得见
+      var shocks = state.shocks;
+      if (shocks) {
+        for (var q = 0; q < shocks.length; q++) {
+          var sk = shocks[q];
+          var kk = clamp(sk.life / sk.ttl, 0, 1);
+          var ska = (1 - kk) * (1 - kk) * 0.7;
+          if (ska <= 0.01) continue;
+          ctx.beginPath();
+          ctx.arc(0, 0, sk.r * (1 + 0.1 * kk), 0, TWO_PI);
+          ctx.strokeStyle = 'hsla(' + sk.hue + ', 96%, 76%, ' + ska + ')';
+          ctx.lineWidth = lineWidth * (2.1 - kk * 1.5);
+          ctx.stroke();
+        }
+      }
+
       // 碎裂粒子
       var list = state.particles;
       for (var p = 0; p < list.length; p++) {
@@ -65,11 +81,18 @@
         var life = clamp(part.life / part.ttl, 0, 1);
         var alpha = (1 - life) * (1 - life) * 0.95;
         if (alpha <= 0.01) continue;
+        // 刚体运动：先按位移飞出，再绕出生点自转，弧段始终是原圆环的真实碎片
+        ctx.save();
+        ctx.translate(part.x - part.x0, part.y - part.y0);
+        ctx.translate(part.x0, part.y0);
+        ctx.rotate(part.rot);
+        ctx.translate(-part.x0, -part.y0);
         ctx.beginPath();
-        ctx.arc(part.x, part.y, part.rad, part.a0 + part.rot, part.a1 + part.rot);
+        ctx.arc(0, 0, part.rad, part.a0, part.a1);
         ctx.strokeStyle = 'hsla(' + part.hue + ', 92%, 66%, ' + alpha + ')';
         ctx.lineWidth = lineWidth * (1.6 - life);
         ctx.stroke();
+        ctx.restore();
       }
 
       var ball = state.ball;

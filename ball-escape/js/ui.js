@@ -5,7 +5,7 @@
   var C = BE.Config;
   var el = {};
   var app = {};
-  var cache = { rings: null, escaped: null, time: null, toggle: null };
+  var cache = { rings: null, escaped: null, time: null, toggle: null, mini: null };
 
   function $(id) { return document.getElementById(id); }
 
@@ -62,6 +62,10 @@
       el.hudRings = $('hudRings');
       el.hudEscaped = $('hudEscaped');
       el.hudTime = $('hudTime');
+      el.miniBar = $('miniBar');
+      el.miniParams = $('miniParams');
+      el.miniToggle = $('miniToggle');
+      el.miniPanel = $('miniPanel');
 
       var d = C.defaults;
       setupRange(el.rings, el.ringsOut, { min: C.rings.initialMin, max: C.rings.initialMax, step: 1, value: d.rings, format: function (v) { return v + ' 层'; } });
@@ -98,6 +102,8 @@
       bind(el.enterBtn, 'click', function () { if (app.onEnter) app.onEnter(); });
       bind(el.againBtn, 'click', function () { if (app.onAgain) app.onAgain(); });
       bind(el.tuneBtn, 'click', function () { if (app.onTune) app.onTune(); });
+      bind(el.miniToggle, 'click', function () { if (app.onToggle) app.onToggle(); });
+      bind(el.miniPanel, 'click', function () { if (app.onShowPanel) app.onShowPanel(); });
     },
 
     read: function () {
@@ -138,7 +144,24 @@
       if (cache.toggle !== label) {
         cache.toggle = label;
         if (el.toggleBtn) el.toggleBtn.textContent = label;
+        if (el.miniToggle) el.miniToggle.textContent = label;
       }
+
+      // 窄屏底部的一行参数
+      var p = state.params;
+      var miniText = '层数 ' + p.rings + ' · 速度 ' + Number(p.speedScale).toFixed(2) + '× · 缺口 ' + p.gapDeg + '° · 新增 ' + p.addPerHit +
+        (p.countdownOn ? ' · 限时 ' + p.countdownSec + 's' : '');
+      if (cache.mini !== miniText) {
+        cache.mini = miniText;
+        if (el.miniParams) el.miniParams.textContent = miniText;
+      }
+    },
+
+    /* 窄屏播放时：收起完整调节栏，只显示底部一行参数 */
+    setCompact: function (on) {
+      var app = document.querySelector('.app');
+      if (app) app.classList.toggle('app--compact', !!on);
+      if (el.miniBar) el.miniBar.hidden = !on;
     },
 
     hideStart: function () {
@@ -169,12 +192,12 @@
       var time = formatTime(state.elapsed);
       if (state.status === 'won') {
         el.resultTitle.textContent = '小球成功逃离！';
-        el.resultText.textContent = '用时 ' + time + '，撞击 ' + state.bounces + ' 次，共击碎 ' +
-          state.rings.length + ' 层圆环。';
+        el.resultText.textContent = '用时 ' + time + '，撞击 ' + state.bounces + ' 次，穿出 ' +
+          state.destroyedCount + ' 层圆环。';
       } else {
         var remaining = state.rings.length - state.destroyedCount;
         el.resultTitle.textContent = '时间到，小球仍被困住';
-        el.resultText.textContent = '限时 ' + state.params.countdownSec + ' 秒，已逃离 ' +
+        el.resultText.textContent = '限时 ' + state.params.countdownSec + ' 秒，已穿出 ' +
           state.destroyedCount + ' 层，还剩 ' + remaining + ' 层。';
       }
       el.resultOverlay.hidden = false;
