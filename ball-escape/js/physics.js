@@ -65,6 +65,8 @@
         ball.x = hx;
         ball.y = hy;
         remaining *= (1 - tHit);
+        // 穿出了圆环：下一次撞击不再新增圆环（“穿出后那一下免费”）
+        state.noAddNext = true;
         state.destroyedCount++;
         destroyed++;
         BE.Particles.spawn(state, ring);
@@ -125,8 +127,13 @@
       );
       state.gapHalf = BE.Rings.gapHalfRad(state);
 
-      // 内侧碰撞 → 外侧新增圆环
-      if (BE.Rings.addOuter(state, state.params.addPerHit) > 0) state.scaleDirty = true;
+      // 内侧碰撞 → 外侧新增圆环；但若上一轮之间穿出过圆环，这次不加
+      if (state.noAddNext) {
+        state.noAddNext = false;
+        state.freeBounces++;
+      } else if (BE.Rings.addOuter(state, state.params.addPerHit) > 0) {
+        state.scaleDirty = true;
+      }
 
       remaining *= (1 - tHit);
       if (remaining < 1e-6) break;

@@ -48,6 +48,8 @@
       elapsed: 0,
       wear: 0,
       gapHalf: 0,
+      noAddNext: false,   // 上一次撞击之后穿过圆环 → 下一次撞击不再新增圆环
+      freeBounces: 0,     // 统计：因“穿出后免费”而没有增环的撞击次数
       status: 'ready',
       scale: 1,
       scaleTarget: 1,

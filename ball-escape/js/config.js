@@ -21,7 +21,7 @@
       initialMax: 24,
       gapDegMin: 8,       // 缺口大小滑杆下限（度）
       gapDegMax: 60,      // 缺口大小滑杆上限（度）
-      gapGrowthPerHit: 5.5, // 每次撞击后全局缺口增长（度）—— “缺口变大”机制
+      gapGrowthPerHit: 4,  // 每次撞击后全局缺口增长（度）—— “缺口变大”机制
       gapDegCap: 330,     // 缺口增长上限（度），保留一小段弧使圆环仍可见
       wearSpread: 0.4     // 环数越多，单次撞击分摊到每层环上的损伤越少（越大越难）
     },

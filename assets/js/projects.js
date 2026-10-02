@@ -20,7 +20,7 @@ window.SITE_DATA = {
       id: 'ball-escape',
       title: '小球逃离环形圈',
       subtitle: 'Ball Escape · 解压向 2D 动画',
-      description: '小球被困在层层同心圆环之中，每次撞击都会在外侧生出新的圆环，唯有对准旋转的缺口才能层层突破。逃出全部圆环的那一刻，动画结束并结算耗时。',
+      description: '小球被困在层层同心圆环之中，每撞一次就会在外侧生出新的圆环，唯有对准旋转的缺口才能层层突破；穿出缺口后的下一次撞击则不再增环。逃出全部圆环的那一刻，动画结束并结算耗时。',
       tags: ['2D 动画', 'Canvas', '物理碰撞', '解压'],
       cover: './assets/covers/ball-escape.svg',
       href: './ball-escape/',
