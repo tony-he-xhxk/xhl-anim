@@ -19,7 +19,8 @@
     var guard = 0;
     var destroyed = 0;
 
-    while (remaining > 1e-6 && guard++ < 16) {
+    // 球速提高后，一帧内可能连续跨越多个圆环；放宽迭代上限避免丢时间
+    while (remaining > 1e-6 && guard++ < 24) {
       var ring = BE.Rings.hub(state);
       if (!ring) {
         ball.x += ball.vx * remaining;
@@ -92,6 +93,21 @@
       var cos = Math.cos(jitter), sin = Math.sin(jitter);
       var vx2 = rx * cos - ry * sin;
       var vy2 = rx * sin + ry * cos;
+
+      // 限制与内向法线的夹角：避免临界掠射导致贴着环壁高频弹跳
+      var inwardX = -ux, inwardY = -uy;      // 指向圆心的单位法线
+      var tanX = -inwardY, tanY = inwardX;   // 单位切向
+      var vlen = Math.hypot(vx2, vy2) || 1;
+      var cosA = (vx2 * inwardX + vy2 * inwardY) / vlen;
+      var angA = Math.acos(Math.max(-1, Math.min(1, cosA)));
+      var maxA = C.bounce.maxChordAngleDeg * Math.PI / 180;
+      if (angA > maxA) {
+        var sense = (vx2 * tanX + vy2 * tanY) >= 0 ? 1 : -1;
+        var ca = Math.cos(maxA), sa = Math.sin(maxA) * sense;
+        vx2 = (inwardX * ca + tanX * sa) * vlen;
+        vy2 = (inwardY * ca + tanY * sa) * vlen;
+      }
+
       var len2 = Math.hypot(vx2, vy2) || 1;
       var target = BE.Ball.speed(state);
       ball.vx = vx2 / len2 * target;

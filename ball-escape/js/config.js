@@ -11,7 +11,7 @@
       r0: 62,            // 最内层圆环半径（世界单位）
       ringGap: 34,       // 环距：固定不变，永不压缩
       ballRadius: 6,     // 小球半径
-      speedFactor: 3.1,  // 小球速率 = speedFactor × 当前最内层圆环半径
+      speedFactor: 4.6,  // 小球速率 = speedFactor × 当前最内层圆环半径
       speedMin: 140      // 速率下限
     },
 
@@ -33,7 +33,8 @@
     },
 
     bounce: {
-      jitterDeg: 1.6     // 反弹抖动，避免退化周期轨道
+      jitterDeg: 16,       // 反弹方向随机偏转（度）：打破“沿直径来回”的镜面不变性
+      maxChordAngleDeg: 72 // 限制与内向法线的夹角，避免贴壁高频弹跳
     },
 
     camera: {
@@ -55,7 +56,7 @@
       spin: 1.6
     },
 
-    trail: { length: 30 },
+    trail: { length: 20 },
 
     theme: {
       hueStart: 280,
