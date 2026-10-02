@@ -28,34 +28,6 @@
           <span class="hud-value hud-value--time" id="hudTime">00:00.0</span>
         </div>
       </div>
-
-      <div class="overlay" id="startOverlay">
-        <div class="panel-card overlay-card">
-          <p class="overlay-eyebrow">BALL&nbsp;ESCAPE</p>
-          <h2 class="overlay-title">小球逃离环形圈</h2>
-          <p class="overlay-text">
-            小球被困在层层同心圆环之中，每一次撞击都会在外侧多生出一层圆环。<br>
-            对准旋转的缺口冲出去，逃出全部圆环，动画即结束并结算耗时。
-          </p>
-          <ul class="overlay-hints">
-            <li>圆环不停转动，各层快慢与方向都不同</li>
-            <li>撞击会让缺口一点点变大，越撞越可能逃出</li>
-            <li>空格暂停 / 继续，R 键重开</li>
-          </ul>
-          <button type="button" class="btn btn--primary" id="startBtn">开 始</button>
-        </div>
-      </div>
-
-      <div class="overlay" id="resultOverlay" hidden>
-        <div class="panel-card overlay-card overlay-card--result">
-          <h2 class="overlay-title" id="resultTitle">小球成功逃离！</h2>
-          <p class="overlay-text" id="resultText"></p>
-          <div class="overlay-actions">
-            <button type="button" class="btn btn--primary" id="againBtn">再来一次</button>
-            <a class="btn btn--ghost" href="../">返回集萃</a>
-          </div>
-        </div>
-      </div>
     </main>
 
     <aside class="panel" aria-label="参数调节面板">
@@ -109,12 +81,41 @@
 
       <footer class="panel-foot">
         <div class="panel-actions">
-          <button type="button" class="btn btn--ghost" id="pauseBtn">暂停</button>
+          <button type="button" class="btn btn--primary" id="toggleBtn">开始</button>
           <button type="button" class="btn btn--ghost" id="restartBtn">重开</button>
         </div>
         <p class="panel-tip">默认参数经过调校：小球最终能逃出全部圆环，但不轻松。调整参数会自动重开一局。</p>
       </footer>
     </aside>
+
+    <!-- 全局遮罩：覆盖画布与参数面板，任何一端的“进入动画 / 结算”都走这里 -->
+    <div class="overlay" id="startOverlay" role="dialog" aria-modal="true" aria-labelledby="startTitle">
+      <div class="overlay-card">
+        <p class="overlay-eyebrow">BALL&nbsp;ESCAPE</p>
+        <h2 class="overlay-title" id="startTitle">小球逃离环形圈</h2>
+        <p class="overlay-text">
+          小球被困在层层同心圆环之中，每一次撞击都会在外侧多生出一层圆环。<br>
+          对准旋转的缺口冲出去，逃出全部圆环，动画即结束并结算耗时。
+        </p>
+        <ul class="overlay-hints">
+          <li>圆环不停转动，各层快慢与方向都不同</li>
+          <li>撞击会让缺口一点点变大，越撞越可能逃出</li>
+          <li>进入后按「开始」播放动画；空格 开始 / 暂停，R 键重开</li>
+        </ul>
+        <button type="button" class="btn btn--primary" id="enterBtn">进入动画</button>
+      </div>
+    </div>
+
+    <div class="overlay" id="resultOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+      <div class="overlay-card overlay-card--result">
+        <h2 class="overlay-title" id="resultTitle">小球成功逃离！</h2>
+        <p class="overlay-text" id="resultText"></p>
+        <div class="overlay-actions">
+          <button type="button" class="btn btn--primary" id="againBtn">再来一次</button>
+          <a class="btn btn--ghost" href="../">返回集萃</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="./js/config.js"></script>

@@ -5,7 +5,7 @@
   var C = BE.Config;
   var el = {};
   var app = {};
-  var cache = { rings: null, escaped: null, time: null, pause: null };
+  var cache = { rings: null, escaped: null, time: null, toggle: null };
 
   function $(id) { return document.getElementById(id); }
 
@@ -50,10 +50,10 @@
       el.countdownOn = $('countdownOn');
       el.countdownSec = $('countdownSec');
       el.countdownWrap = $('countdownWrap');
-      el.pauseBtn = $('pauseBtn');
+      el.toggleBtn = $('toggleBtn');
       el.restartBtn = $('restartBtn');
       el.startOverlay = $('startOverlay');
-      el.startBtn = $('startBtn');
+      el.enterBtn = $('enterBtn');
       el.resultOverlay = $('resultOverlay');
       el.resultTitle = $('resultTitle');
       el.resultText = $('resultText');
@@ -92,9 +92,9 @@
         if (app.onCountdownChange) app.onCountdownChange();
       });
 
-      bind(el.pauseBtn, 'click', function () { if (app.onPause) app.onPause(); });
+      bind(el.toggleBtn, 'click', function () { if (app.onToggle) app.onToggle(); });
       bind(el.restartBtn, 'click', function () { if (app.onRestart) app.onRestart(); });
-      bind(el.startBtn, 'click', function () { if (app.onStart) app.onStart(); });
+      bind(el.enterBtn, 'click', function () { if (app.onEnter) app.onEnter(); });
       bind(el.againBtn, 'click', function () { if (app.onAgain) app.onAgain(); });
     },
 
@@ -130,19 +130,27 @@
         cache.time = time;
         if (el.hudTime) el.hudTime.textContent = time;
       }
-      var label = state.status === 'paused' ? '继续' : '暂停';
-      if (cache.pause !== label) {
-        cache.pause = label;
-        if (el.pauseBtn) el.pauseBtn.textContent = label;
+      // 双语义按钮：未开始 → 开始；播放中 → 暂停；暂停中 → 继续
+      var label = state.status === 'running' ? '暂停'
+        : (state.status === 'paused' ? '继续' : '开始');
+      if (cache.toggle !== label) {
+        cache.toggle = label;
+        if (el.toggleBtn) el.toggleBtn.textContent = label;
       }
     },
 
     hideStart: function () {
       if (el.startOverlay) el.startOverlay.hidden = true;
+      if (el.toggleBtn && document.activeElement === el.enterBtn) el.toggleBtn.focus();
     },
 
     showStart: function () {
       if (el.startOverlay) el.startOverlay.hidden = false;
+      if (el.enterBtn) el.enterBtn.focus();
+    },
+
+    isStartVisible: function () {
+      return !!(el.startOverlay && !el.startOverlay.hidden);
     },
 
     hideResult: function () {
@@ -163,6 +171,7 @@
           state.destroyedCount + ' 层，还剩 ' + remaining + ' 层。';
       }
       el.resultOverlay.hidden = false;
+      if (el.againBtn) el.againBtn.focus();
     }
   };
 })(window.BE);

@@ -99,16 +99,18 @@
     while (trail.length > C.trail.length) trail.shift();
   }
 
-  function restart(keepRunning) {
+  /* startRunning: 新一局是否立刻播放；showOverlay: 是否重新弹出“进入动画”遮罩 */
+  function restart(startRunning, showOverlay) {
     state = createState();
     resultShown = false;
     BE.UI.hideResult();
-    if (keepRunning) {
+    if (startRunning) {
       state.status = 'running';
       BE.UI.hideStart();
     } else {
       state.status = 'ready';
-      BE.UI.showStart();
+      if (showOverlay) BE.UI.showStart();
+      else BE.UI.hideStart();
     }
     BE.UI.sync(state);
   }
@@ -123,23 +125,28 @@
   }
 
   var handlers = {
-    onStart: function () {
-      if (!state) return;
-      if (state.status === 'ready') state.status = 'running';
-      else if (state.status === 'paused') state.status = 'running';
+    /* 只关闭“进入动画”遮罩，不改变播放状态：进入后由“开始”按钮决定何时播放 */
+    onEnter: function () {
       BE.UI.hideStart();
     },
-    onPause: function () {
+    /* 双语义按钮：开始 → 播放；暂停 → 暂停；继续 → 继续 */
+    onToggle: function () {
       if (!state) return;
-      if (state.status === 'running') state.status = 'paused';
-      else if (state.status === 'paused') state.status = 'running';
+      if (state.status === 'ready' || state.status === 'paused') {
+        state.status = 'running';
+      } else if (state.status === 'running') {
+        state.status = 'paused';
+      } else {
+        restart(true);   // won / lost 状态下点它 → 直接开新的一局
+        return;
+      }
       BE.UI.sync(state);
     },
-    onRestart: function () { restart(true); },
-    onAgain: function () { restart(true); },
+    onRestart: function () { restart(true, false); },
+    onAgain: function () { restart(true, false); },
     onStructChange: function () {
       params = BE.UI.read();
-      restart(state && state.status !== 'ready');
+      restart(state && state.status !== 'ready', false);
     },
     onSpeedChange: function () { applySpeed(); },
     onCountdownChange: function () {
@@ -191,15 +198,24 @@
   }
 
   function onKey(event) {
-    var tag = (event.target && event.target.tagName) || '';
-    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    var target = event.target || {};
+    var tag = target.tagName || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON' || target.isContentEditable) return;
+
+    // 遮罩期间：回车 / 空格只负责“进入动画”，不会偷偷开始播放
+    if (BE.UI.isStartVisible()) {
+      if (event.key === 'Enter' || event.code === 'Space') {
+        event.preventDefault();
+        handlers.onEnter();
+      }
+      return;
+    }
+
     if (event.code === 'Space') {
       event.preventDefault();
-      handlers.onPause();
+      handlers.onToggle();
     } else if (event.key === 'r' || event.key === 'R') {
       handlers.onRestart();
-    } else if (event.key === 'Enter' && state && state.status === 'ready') {
-      handlers.onStart();
     }
   }
 
@@ -213,7 +229,7 @@
     resize();
     BE.UI.init(handlers);
     params = BE.UI.read();
-    restart(false);
+    restart(false, true);   // 首屏：静止 + 全局“进入动画”遮罩
 
     window.addEventListener('resize', resize);
     if (window.ResizeObserver && stage) {

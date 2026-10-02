@@ -33,6 +33,7 @@ html, body {
 }
 
 .app {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 328px;
   height: 100vh;
@@ -95,19 +96,24 @@ html, body {
 .overlay {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 1.5rem;
-  background: radial-gradient(60% 60% at 50% 50%, rgba(8, 6, 20, 0.72), rgba(4, 4, 10, 0.92));
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  animation: fadeIn 0.45s ease both;
-  z-index: 5;
+  z-index: 20;
+  display: flex;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(1rem, 4vh, 2.6rem) 1.25rem;
+  background: radial-gradient(72% 72% at 50% 42%, rgba(8, 6, 20, 0.86), rgba(4, 4, 10, 0.96));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  /* 不用 fill-mode: both —— 若某些环境不执行动画，遮罩仍保持 opacity 1，
+     否则会“看不见但挡住整页点击” */
+  animation: fadeIn 0.45s ease;
 }
 
 .overlay[hidden] { display: none; }
 
 .overlay-card {
+  margin: auto;
+  width: 100%;
   max-width: 33rem;
   text-align: center;
   padding: 2rem 2.1rem;
@@ -212,10 +218,12 @@ html, body {
 }
 
 .btn--primary {
-  margin-top: 1.6rem;
   background: linear-gradient(100deg, var(--neon-a), var(--neon-b));
   box-shadow: 0 14px 34px -14px rgba(168, 85, 247, 0.9);
 }
+
+/* 遮罩卡片里的主按钮与文案留白；面板内的主按钮不受影响 */
+.overlay-card > .btn--primary { margin-top: 1.6rem; }
 
 .btn--primary:hover {
   transform: translateY(-2px);
@@ -512,6 +520,17 @@ html, body {
   .ctrl { gap: 0.4rem; }
   .panel-foot { gap: 0.65rem; padding-top: 0.75rem; }
   .panel-tip { display: none; }
+}
+
+/* 矮屏（横屏手机 / 小窗口）：压缩遮罩卡片，保证按钮始终可见 */
+@media (max-height: 560px) {
+  .overlay { padding: 0.8rem 1rem; }
+  .overlay-card { padding: 1.15rem 1.3rem; }
+  .overlay-eyebrow { margin-bottom: 0.45rem; }
+  .overlay-title { margin-bottom: 0.5rem; }
+  .overlay-text { font-size: 0.84rem; line-height: 1.65; }
+  .overlay-hints { display: none; }
+  .overlay-card > .btn--primary { margin-top: 0.9rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
