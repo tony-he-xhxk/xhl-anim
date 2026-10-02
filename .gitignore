@@ -1,0 +1,26 @@
+# 本地说明与参考资料（不上传）
+/guide.txt
+/ball-escape/guide/
+
+# 计划文件
+/plans/
+/PLAN*.md
+*.plan.md
+/计划*.md
+
+# 临时文件
+*.tmp
+*.temp
+*.log
+.DS_Store
+Thumbs.db
+
+# 备份文件
+*.bak
+*.bak.*
+
+# 无需上传的本地构建产物
+/node_modules/
+/dist/
+/.cache/
+/work/

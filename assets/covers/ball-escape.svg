@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500"
+     preserveAspectRatio="xMidYMid slice" role="img"
+     aria-label="小球逃离环形圈：同心圆环与发光小球">
+  <defs>
+    <linearGradient id="be-rainbow" x1="0" y1="0" x2="800" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c026d3"/>
+      <stop offset="0.18" stop-color="#a855f7"/>
+      <stop offset="0.36" stop-color="#6366f1"/>
+      <stop offset="0.54" stop-color="#22d3ee"/>
+      <stop offset="0.7" stop-color="#34d399"/>
+      <stop offset="0.84" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#f43f5e"/>
+    </linearGradient>
+    <radialGradient id="be-core" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.42" stop-color="#f5f3ff"/>
+      <stop offset="1" stop-color="#a855f7"/>
+    </radialGradient>
+    <radialGradient id="be-halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="0.32" stop-color="#c084fc" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="be-vignette" cx="50%" cy="46%" r="72%">
+      <stop offset="0" stop-color="#1b1440" stop-opacity="0.95"/>
+      <stop offset="0.55" stop-color="#0a0a16" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#04040a"/>
+    </radialGradient>
+    <filter id="be-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="800" height="500" fill="#04040a"/>
+  <rect width="800" height="500" fill="url(#be-vignette)"/>
+
+  <g transform="translate(400 250)" filter="url(#be-glow)" fill="none"
+     stroke="url(#be-rainbow)" stroke-linecap="round" opacity="0.92">
+    <circle r="52"  pathLength="1000" stroke-width="2.4" stroke-dasharray="966 34" stroke-dashoffset="0"/>
+    <circle r="74"  pathLength="1000" stroke-width="2.4" stroke-dasharray="966 34" stroke-dashoffset="-140"/>
+    <circle r="96"  pathLength="1000" stroke-width="2.4" stroke-dasharray="966 34" stroke-dashoffset="-280"/>
+    <circle r="118" pathLength="1000" stroke-width="2.4" stroke-dasharray="966 34" stroke-dashoffset="-60"/>
+    <circle r="140" pathLength="1000" stroke-width="2.4" stroke-dasharray="966 34" stroke-dashoffset="-200"/>
+    <circle r="162" pathLength="1000" stroke-width="2.4" stroke-dasharray="966 34" stroke-dashoffset="-340"/>
+    <circle r="184" pathLength="1000" stroke-width="2.4" stroke-dasharray="966 34" stroke-dashoffset="-110"/>
+    <circle r="206" pathLength="1000" stroke-width="2.4" stroke-dasharray="966 34" stroke-dashoffset="-250"/>
+    <circle r="228" pathLength="1000" stroke-width="2.4" stroke-dasharray="966 34" stroke-dashoffset="-30"/>
+  </g>
+
+  <!-- 碎裂残片 -->
+  <g stroke="url(#be-rainbow)" fill="none" stroke-linecap="round" opacity="0.7">
+    <path d="M 686 168 a 228 228 0 0 1 -22 40" stroke-width="2.4"/>
+    <path d="M 672 232 a 228 228 0 0 1 -40 26" stroke-width="2.4" opacity="0.55"/>
+    <path d="M 704 120 a 228 228 0 0 1 -10 24" stroke-width="2.4" opacity="0.4"/>
+  </g>
+
+  <!-- 小球拖尾 -->
+  <path d="M 604 96 Q 570 78 545 80" fill="none" stroke="#22d3ee" stroke-width="2"
+        stroke-linecap="round" opacity="0.55"/>
+  <path d="M 612 112 Q 588 100 572 100" fill="none" stroke="#a855f7" stroke-width="1.6"
+        stroke-linecap="round" opacity="0.4"/>
+
+  <!-- 小球 -->
+  <circle cx="528" cy="86" r="34" fill="url(#be-halo)"/>
+  <circle cx="528" cy="86" r="11" fill="url(#be-core)" filter="url(#be-glow)"/>
+  <circle cx="524.5" cy="82.5" r="3" fill="#ffffff" opacity="0.95"/>
+</svg>
