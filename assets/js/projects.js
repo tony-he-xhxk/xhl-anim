@@ -7,11 +7,9 @@ window.SITE_DATA = {
     title: '动效集萃',
     subtitle: '把解压感拉满的网页动效，一个入口全部收集。',
     footer: {
-      copy: '© {year} xingheling.cn',
+      copy: '星河绫 ·',
       links: [
-        { label: '博客', href: 'https://xingheling.cn' },
-        // TODO: 换成你自己的仓库地址
-        { label: 'GitHub', href: 'https://github.com/' }
+        { label: 'GitHub', href: 'https://github.com/tony-he-xhxk/xhl-anim', icon: 'github' }
       ]
     }
   },

@@ -17,7 +17,7 @@
 - 整张卡片就是链接，点击即进入对应的动效页面（例如 `/ball-escape/`）。
 - 列表由数据驱动：所有项目信息集中在 `assets/js/projects.js` 的 `window.SITE_DATA` 里。
   新增动效时只需在 `projects` 数组中追加一条记录，并把封面图放进 `assets/covers/`，页面结构无需改动。
-- 页脚展示版权年份与站点链接（博客 / 仓库地址在该数据文件里维护）。
+- 页脚是一行居中的「星河绫 · GitHub」：`GitHub` 带一枚章鱼猫图标，点击在新标签页打开仓库 `https://github.com/tony-he-xhxk/xhl-anim`（文案、链接、图标同样在 `assets/js/projects.js` 里维护）。
 
 ### 视觉与页面动效
 
