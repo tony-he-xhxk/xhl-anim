@@ -65,7 +65,7 @@
       el.miniBar = $('miniBar');
       el.miniParams = $('miniParams');
       el.miniToggle = $('miniToggle');
-      el.miniPanel = $('miniPanel');
+      el.miniRestart = $('miniRestart');
 
       var d = C.defaults;
       setupRange(el.rings, el.ringsOut, { min: C.rings.initialMin, max: C.rings.initialMax, step: 1, value: d.rings, format: function (v) { return v + ' 层'; } });
@@ -103,7 +103,7 @@
       bind(el.againBtn, 'click', function () { if (app.onAgain) app.onAgain(); });
       bind(el.tuneBtn, 'click', function () { if (app.onTune) app.onTune(); });
       bind(el.miniToggle, 'click', function () { if (app.onToggle) app.onToggle(); });
-      bind(el.miniPanel, 'click', function () { if (app.onShowPanel) app.onShowPanel(); });
+      bind(el.miniRestart, 'click', function () { if (app.onRestart) app.onRestart(); });
     },
 
     read: function () {
